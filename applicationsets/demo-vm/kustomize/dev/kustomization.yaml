@@ -12,7 +12,7 @@ patches:
         path: /spec/template/spec/domain/memory/guest
         value: 4096M
       - op: replace
-        path: /spec/template/spec/running
+        path: /spec/running
         value: true
 
     target:
