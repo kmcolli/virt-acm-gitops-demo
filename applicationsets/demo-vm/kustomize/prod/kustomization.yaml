@@ -11,5 +11,12 @@ patches:
       - op: replace
         path: /spec/template/spec/domain/memory/guest
         value: 2048M
+      - op: replace
+        path: /spec/template/spec/volumes/1/cloudInitNoCloud/userData
+        value: |-
+          #cloud-config
+          user: fedora
+          password: fedora123
+          chpasswd: { expire: False }
     target:
       kind: VirtualMachine
