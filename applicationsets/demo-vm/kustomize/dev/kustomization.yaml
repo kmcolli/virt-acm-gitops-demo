@@ -10,10 +10,6 @@ patches:
     - op: replace
       path: /spec/template/spec/volumes/1/cloudInitNoCloud/userData
       value: |-
-        #cloud-config
-        user: fedora
-        password: fedora
-        chpasswd: { expire: False }
         package_upgrade: true
         packages:
           - httpd
