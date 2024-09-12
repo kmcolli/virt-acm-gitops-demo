@@ -5,22 +5,16 @@ metadata:
 spec:
   generators:
   # Only select external clusters, excludes local cluster
-  - clusters:
-      selector:
-        matchLabels:
-          argocd.argoproj.io/secret-type: cluster
+  - clusters: {}
   template:
     metadata:
-      name: "{{nameNormalized}}-demo-vm"
+      name: "demo-vm"
     spec:
       project: default
       source:
-        repoURL: https://github.com/bizquigs/virt-acm-gitops-demo.git
+        repoURL: https://github.com/kmcolli/virt-acm-gitops-demo.git
         targetRevision: HEAD
-        path: "applicationsets/demo-vm/kustomize/{{metadata.labels.env}}"
-        kustomize:
-          commonAnnotations:
-            managed-cluster: "{{nameNormalized}}"
+        path: "applicationsets/demo-vm/kustomize/dev"
       destination:
         server: "{{server}}"
         namespace: demo-vm
