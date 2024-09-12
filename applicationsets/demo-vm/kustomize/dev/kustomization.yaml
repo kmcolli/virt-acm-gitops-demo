@@ -8,9 +8,6 @@ namePrefix: dev-
 patches:
 - patch: |
     - op: replace
-      path: /spec/template/spec/domain/memory/guest
-      value: 4096M
-    - op: replace
       path: /spec/template/spec/volumes/1/cloudInitNoCloud/userData
       value: |-
         #cloud-config
