@@ -4,64 +4,64 @@ metadata:
   name: example-vm
   namespace: demo-vm
 spec:
-  dataVolumeTemplates:
-  - apiVersion: cdi.kubevirt.io/v1beta1
-    kind: DataVolume
-    metadata:
-      name: example-vm-disk
-    spec:
-      sourceRef:
-        kind: DataSource
-        name: rhel9
-        namespace: openshift-virtualization-os-images
-      storage:
-        resources:
-          requests:
-            storage: 30Gi
   running: true
   template:
     metadata:
+      annotations:
+        vm.kubevirt.io/flavor: small
+        vm.kubevirt.io/os: fedora
+        vm.kubevirt.io/workload: server
+      creationTimestamp: null
       labels:
-        kubevirt.io/domain: example-vm
+        kubevirt.io/domain: example
+        kubevirt.io/size: small
     spec:
+      architecture: amd64
       domain:
         cpu:
           cores: 1
-          sockets: 2
+          sockets: 1
           threads: 1
         devices:
           disks:
-          - disk:
-              bus: virtio
-            name: rootdisk
-          - disk:
-              bus: virtio
-            name: cloudinitdisk
+            - disk:
+                bus: virtio
+              name: rootdisk
+            - disk:
+                bus: virtio
+              name: cloudinitdisk
           interfaces:
-          - masquerade: {}
-            name: default
+            - macAddress: '02:41:ca:00:00:05'
+              masquerade: {}
+              model: virtio
+              name: default
+          networkInterfaceMultiqueue: true
           rng: {}
         features:
+          acpi: {}
           smm:
             enabled: true
         firmware:
           bootloader:
             efi: {}
-        resources:
-          requests:
-            memory: 8Gi
-      evictionStrategy: LiveMigrate
+        machine:
+          type: q35
+        memory:
+          guest: 2Gi
+        resources: {}
+      hostname: example
       networks:
-      - name: default
-        pod: {}
+        - name: default
+          pod: {}
+      terminationGracePeriodSeconds: 180
       volumes:
-        - name: rootdisk
-          dataVolume:
-            name: example-vm-disk
-        - cloudInitConfigDrive:
+        - containerDisk:
+            image: quay.io/containerdisks/fedora
+          name: rootdisk
+        - cloudInitNoCloud:
             userData: |-
               #cloud-config
-              user: cloud-user
-              password: not-a-secure-password
+              user: fedora
+              password: fedora
               chpasswd: { expire: False }
           name: cloudinitdisk
