@@ -1,8 +1,6 @@
-apiVersion: kubevirt.io/v1
-kind: VirtualMachine
-metadata:
-  name: example-vm
-  namespace: demo-vm
+  labels:
+    app: example
+    os.template.kubevirt.io/fedora: 'true'
 spec:
   running: true
   template:
@@ -49,7 +47,7 @@ spec:
         memory:
           guest: 2Gi
         resources: {}
-      hostname: example-vm
+      hostname: example
       networks:
         - name: default
           pod: {}
